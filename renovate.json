@@ -74,6 +74,29 @@
         "dockerfile"
       ],
       "pinDigests": true
+    },
+    {
+      "description": "Apply the non-major dependency policy to Devbox packages.",
+      "matchManagers": [
+        "devbox"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "groupName": "all non-major dependencies",
+      "groupSlug": "all-minor-patch"
+    },
+    {
+      "description": "Review Go toolchain updates separately.",
+      "matchManagers": [
+        "devbox"
+      ],
+      "matchPackageNames": [
+        "go"
+      ],
+      "groupName": "go toolchain",
+      "groupSlug": "go-toolchain"
     }
   ],
   "customManagers": [
@@ -92,6 +115,20 @@
       "datasourceTemplate": "github-releases",
       "depNameTemplate": "manual-review",
       "enabled": false
+    },
+    {
+      "customType": "regex",
+      "description": "Update the opm version installed by the Devbox shell hook.",
+      "managerFilePatterns": [
+        "/^devbox\\.json$/"
+      ],
+      "matchStrings": [
+        "\"OPM_VERSION\"\\s*:\\s*\"(?<currentValue>\\d+\\.\\d+\\.\\d+)\""
+      ],
+      "datasourceTemplate": "github-releases",
+      "depNameTemplate": "operator-framework/operator-registry",
+      "extractVersionTemplate": "^v(?<version>\\d+\\.\\d+\\.\\d+)$",
+      "versioningTemplate": "semver"
     }
   ]
 }
